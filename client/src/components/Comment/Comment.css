@@ -1,0 +1,14 @@
+.comment-reply {
+    padding: 5px 4px;
+    width: 270px;
+    outline: none;
+    border-radius: 5px;
+    border: 0px;
+    background: none;
+    border-bottom: 1px solid gray;
+    margin-bottom: 10px;
+}
+.btn {
+    padding: 4px 7px;
+    background: dodgerblue;
+}

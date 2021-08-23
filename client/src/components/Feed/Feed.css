@@ -1,0 +1,15 @@
+.feed-container {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    flex-grow: 1;
+}
+.feed-content-holder {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    /* justify-content: center; */
+    align-items: center;
+    min-height: 300px;
+    min-width: 350px;
+}

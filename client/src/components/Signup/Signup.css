@@ -1,0 +1,75 @@
+/* * {
+    box-sizing: border-box;
+    font-family:'sans-serief, Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    user-select: none;
+} */
+body {
+    width: 100%;
+    height: 100%;
+}
+.signup-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    height: 100vh;
+}
+.signup-inner-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+    min-height: 700px;
+}
+.signup-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 350px;
+    min-width: 350px;
+    border-radius: 5px;
+    -moz-box-shadow: 0 0 3px #888;
+    -webkit-box-shadow: 0 0 3px #888;
+    box-shadow: 0 0 3px #888;
+}
+.signup-card > h3 {
+    margin-top: 10px;
+}
+.signup-card > form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+.signup-card > form > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+}
+.signup-card > form > div > input,
+.signup-card > form > div > select {
+    padding: 8px 6px;
+    width: 300px;
+    border-radius: 5px;
+    border: 1px solid black;
+    outline: none;
+}
+.signup-card > form > div > input:hover,
+.signup-card > form > div > input:focus,
+.signup-card > form > div > select:hover,
+.signup-card > form > div > select:focus {
+    border: 1px solid dodgerblue;
+    -moz-box-shadow: 0 0 5px dodgerblue;
+    -webkit-box-shadow: 0 0 5px dodgerblue;
+    box-shadow: 0 0 5px dodgerblue;
+}
+#user-agreement-agree {
+    text-align: center;
+    margin-top: 10px;
+    font-size: small;
+    color: gray;
+}

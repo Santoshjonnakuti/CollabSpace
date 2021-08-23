@@ -1,0 +1,29 @@
+footer {
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.footer-container {
+    min-height: 50px;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row ;
+    justify-content: space-between;
+    align-items: center;
+}
+.footer-container > div {
+    margin: 0px 10px;
+}
+.social-media-icons {
+    margin: 0px 10px;
+    color: black;
+    height: 14px;
+}
+
+.social-media-icons > i {
+    font-size: 18px;
+}

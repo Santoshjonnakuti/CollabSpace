@@ -1,0 +1,61 @@
+.new-post-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+}
+.new-post-card-holder {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+}
+.new-post-card {
+    display: flex;
+    flex-shrink: 1;
+    flex-direction: column;
+    padding: 5px 5px;
+    border-radius: 5px;
+    -moz-box-shadow: 0 0 3px #888;
+    -webkit-box-shadow: 0 0 3px #888;
+    box-shadow: 0 0 3px #888;
+}
+.new-post-card > h3 {
+    text-align: center;
+}
+.new-post-card > form > div > input {
+    width: 253px;
+    padding: 5px 2px;
+    margin: 5px 5px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    outline: none;
+    /* border: 1px solid red; */
+    /* -moz-box-shadow: 0 0 3px red;
+    -webkit-box-shadow: 0 0 3px red;
+    box-shadow: 0 0 3px red; */
+}
+.new-post-card > form > div > input:hover,
+.new-post-card > form > div > input:focus {
+    border: 1px solid dodgerblue;
+    -moz-box-shadow: 0 0 3px dodgerblue;
+    -webkit-box-shadow: 0 0 3px dodgerblue;
+    box-shadow: 0 0 3px dodgerblue;
+}
+.new-post-card > form > div > textarea {
+    padding: 5px 2px;
+    border: 1px solid gray;
+    box-sizing: border-box;
+    border-radius: 5px;
+    resize: none;
+    outline: none;
+    margin: 5px 5px;
+}
+.new-post-card > form > div > textarea:hover,
+.new-post-card > form > div > textarea:focus {
+    border: 1px solid dodgerblue;
+    -moz-box-shadow: 0 0 3px dodgerblue;
+    -webkit-box-shadow: 0 0 3px dodgerblue;
+    box-shadow: 0 0 3px dodgerblue;
+}
