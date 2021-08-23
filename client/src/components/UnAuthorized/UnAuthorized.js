@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import "./UnAuthorized.css";
+// import "./UnAuthorized.css";
 
 const UnAuthorized = () => {
     return (
