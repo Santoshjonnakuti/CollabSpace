@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const cookieParser = require("cookie-parser");
+const nodemailer = require("nodemailer");
 const DBConnection = require("./Database/DBConnection/DBConnection");
 const User = require("./Database/Models/User");
 const Authenticate = require("./Middleware/Auth");
@@ -16,9 +17,8 @@ const corsConfig = {
     credentials: true,
   };
   
-  app.use(cors(corsConfig));
-  app.options('*', cors(corsConfig));
-  
+app.use(cors(corsConfig));
+app.options('*', cors(corsConfig));  
 app.use(express.json());
 app.use(cookieParser());
 
@@ -333,6 +333,91 @@ app.post("/updateCommentReply", Authenticate, async (req, res) => {
         }
     }
 });
+
+app.post("/forgotPassword", async(req, res) => {
+    const {Email} = req.body.body;
+    if(!Email) {
+        res.send({"Status": "400", "Message": "Error"});
+        
+    }
+    const user = await User.findOne({"Email": Email});
+    if(!user) {
+        res.send({"Status": "400", "Message":"User Does not Exist"});
+    }
+    else {
+        const OTP = Math.floor(100000 + Math.random() * 900000);
+        const token = await jwt.sign({Email: Email, OTP: OTP}, process.env.SECRET_KEY, {
+            expiresIn : 600000 
+        });
+        res.cookie("jwtokenOTP", token, {
+            httpOnly: true
+        });
+        try {
+            var transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                  user: 'portalexamination@gmail.com',
+                  pass: process.env.PASSWORDMAIL
+                }
+              });
+              
+              var mailOptions = {
+                from: 'portalexamination@gmail.com',
+                to: Email,
+                subject: 'Resetting Your Password for CollabSpace',
+                text: `Please Do not share your otp.\nYour OTP is ${OTP}`
+              };
+              
+              transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                  console.log(error);
+                } else {
+                  console.log('Email sent: ' + info.response);
+                }
+              });
+        } catch (error) {
+            res.send({"Status": "400", "Message": "Error"}); 
+        }
+        res.send({"Status": 200, "Message": "OTP sent Successfully..."});
+    }
+
+})
+
+app.post("/otpEntry", async (req, res) => {
+    let {OTP} = req.body.body;
+    try {
+        const token = jwt.verify(req.cookies.jwtokenOTP, process.env.SECRET_KEY);
+        // console.log(OTP, token.OTP);
+        OTP = parseInt(OTP);
+        if(OTP === token.OTP) {
+            res.send({"Status": 200, "Message":"OTP Validated!"});
+        }
+        else {
+            res.send({"Status": "400", "Message":"Invalid OTP"});
+        }
+    } catch (error) {
+        res.send({"Status": "400", "Message":"Error!"});
+    }
+});
+
+app.post("/resetPassword", async(req, res) => {
+    const {Password} = req.body.body;
+    let token = {};
+    try {
+        token = jwt.verify(req.cookies.jwtokenOTP, process.env.SECRET_KEY);
+    }
+    catch(error) {
+        res.send({"Status":"400", "Message":"Error!"});
+    }
+    const Email = token.Email;
+    const user = await User.findOne({"Email": Email});
+    if(user) {
+        user.Password = await bcrypt.hash(Password, 12);
+        await user.save();
+        res.clearCookie('jwtokenOTP', {path: "/"});
+        res.send({"Status": 200, "Message": "Password Reset Success..."});
+    }
+})
 
 app.get("/logout", async(req, res) => {
     res.clearCookie('jwtoken', {path :"/"});
