@@ -105,7 +105,8 @@ function Login(props) {
                         <button className="btn btn-primary" onClick={handleSubmit}>Login</button>
                         <br></br>
                     </form>
-                    <NavLink to="/forgotPassword" className="mb-3" style={{textDecoration:"none"}}>Forgot Password ?</NavLink>
+                    <NavLink to="/forgotPassword" className="border-0 mb-3" style={{textDecoration:"none", background:"none"}}>
+                    Forgot Password ?</NavLink>
                 </div>
             </div>
             <Footer />

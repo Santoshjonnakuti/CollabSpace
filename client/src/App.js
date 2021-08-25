@@ -13,6 +13,9 @@ import Logout from "./components/Logout/Logout";
 import Error from './components/Error/Error';
 import NoInternet from './components/NoInternet/NoInternet';
 import ViewPost from './components/ViewPost/ViewPost';
+import OTPEmail from "./components/OTPEmail/OTPEmail";
+import OTPEntry from "./components/OTPEntry/OTPEntry";
+import OTPPassword from './components/OTPPassword/OTPPassword';
 
 
 export default function App() {
@@ -29,6 +32,9 @@ export default function App() {
         <Route path="/Account/Posts" exact component = {Posts} />
         <Route path="/Account/NewPost" exact component = {NewPost} />
         <Route path="/Account/Profile" exact component = {Profile} />
+        <Route path="/forgotPassword" exact component = {OTPEmail} />
+        <Route path="/forgotPassword/otpEntry" exact component = {OTPEntry}/>
+        <Route path="/forgotPassword/reset" exact component = {OTPPassword} />
         <Route path="/Account/logout" exact component={Logout} />
         <Route path="/noInternet/" exact component = {NoInternet} />
         <Route path="/userAgreement/" exact/>
