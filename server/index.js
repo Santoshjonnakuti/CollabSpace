@@ -387,7 +387,6 @@ app.post("/otpEntry", async (req, res) => {
     let {OTP} = req.body.body;
     try {
         const token = jwt.verify(req.cookies.jwtokenOTP, process.env.SECRET_KEY);
-        // console.log(OTP, token.OTP);
         OTP = parseInt(OTP);
         if(OTP === token.OTP) {
             res.send({"Status": 200, "Message":"OTP Validated!"});
@@ -417,7 +416,7 @@ app.post("/resetPassword", async(req, res) => {
         res.clearCookie('jwtokenOTP', {path: "/"});
         res.send({"Status": 200, "Message": "Password Reset Success..."});
     }
-})
+});
 
 app.get("/logout", async(req, res) => {
     res.clearCookie('jwtoken', {path :"/"});

@@ -8,6 +8,7 @@ import defaultMale from "../../images/default-male.jpg";
 import defaultFemale from "../../images/default-female.jpg";
 import UnAuthorized from '../UnAuthorized/UnAuthorized';
 import Loading from '../Loading/Loading';
+import { ToastContainer } from 'react-toastify';
 
 function Profile() {
     const [Authorized, setAuth] = useState(false);
@@ -149,6 +150,7 @@ function Profile() {
                 </div>
             </div>
             <Footer />
+            <ToastContainer />
         </div> 
         :
         <UnAuthorized />
