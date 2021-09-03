@@ -20,7 +20,7 @@ const reply = new mongoose.Schema({
     postedOn :{
         type:Date,
         required:true
-    },
+    }
 });
 
 const comment = new mongoose.Schema({
@@ -78,7 +78,11 @@ const post = new mongoose.Schema({
         required: true
     },
     LikedBy : [String],
-    Comments : [comment]
+    Comments : [comment],
+    Image : {
+        type: String,
+        default: "None"
+    }
 });
 
 module.exports = Post = mongoose.model('Post',post);

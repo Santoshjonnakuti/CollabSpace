@@ -20,7 +20,8 @@ const corsConfig = {
   
 app.use(cors(corsConfig));
 app.options('*', cors(corsConfig));  
-app.use(express.json());
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb', extended: true, parameterLimit: 50000}));
 app.use(cookieParser());
 app.use(fileUpload());
 
@@ -156,7 +157,11 @@ app.post("/newPost", Authenticate, async(req, res) => {
         res.status(401).send({});
     }
     else {
-        const {Title, Description} = req.body.body;
+        const {Title, Description} = req.body;
+        var PostImage;
+        if(req.files) {
+           PostImage = req.files.PostImage;
+        }
         let post = {};
         post.Name = req.rootUser.FirstName + " " + req.rootUser.LastName;
         post.Email = req.rootUser.Email;
@@ -167,13 +172,17 @@ app.post("/newPost", Authenticate, async(req, res) => {
         post.postedOn = new Date();
         try {
             let postModel = new Post(post);
+            if(PostImage) {
+                PostImage.mv("../client/public/images/PostImages/" + postModel._id + PostImage.name);
+                postModel.Image = postModel._id + PostImage.name;
+            }
             await postModel.save();
             const user = await User.findOne({"Email" : req.rootUser.Email});
             user.Posts = parseInt(user.Posts) + 1;
             await user.save();
-            res.status(200).send(req.rootUser);
+            res.status(200).send({"Status": "200", "Message": "Success"});
         } catch (error) {
-            res.status(201).send(req.rootUser);
+            res.status(201).send({"Status": "400", "Message": "Error!"});
         }
     }
 });

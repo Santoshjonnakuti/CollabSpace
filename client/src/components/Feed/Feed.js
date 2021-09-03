@@ -45,11 +45,26 @@ function Feed(props) {
                 }
                 LikedUser = data[item].LikedBy[i];
             };
-            array.push(
-                <Post key={data[item]._id} Data={data[item]} Liked={Liked} LikedUser={LikedUser.split("@")[0]} location={props.location.pathname}
-                    Profile={UserData.Profiles[item]}
-                />
-            );
+            if(data[item].Image === "None") {
+                array.push(
+                    <Post key={data[item]._id} Data={data[item]} Liked={Liked} LikedUser={LikedUser.split("@")[0]} 
+                    location={props.location.pathname} Profile={UserData.Profiles[item]} isImage={false}
+                    />
+                );
+            }
+            else {
+                array.push(
+                    <Post key={data[item]._id} Data={data[item]} Liked={Liked} LikedUser={LikedUser.split("@")[0]} 
+                    location={props.location.pathname} Profile={UserData.Profiles[item]} isImage={true}
+                    PostImage={"../../images/PostImages/" + data[item].Image}
+                    />
+                );
+            }
+            // array.push(
+            //     <Post key={data[item]._id} Data={data[item]} Liked={Liked} LikedUser={LikedUser.split("@")[0]} location={props.location.pathname}
+            //         Profile={UserData.Profiles[item]}
+            //     />
+            // );
         }
         return array;
     }

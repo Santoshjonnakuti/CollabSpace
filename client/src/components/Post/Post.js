@@ -108,9 +108,13 @@ function Post(props) {
                 <p id="posts-title">
                     {props.Data.Title}
                 </p>
-                    <p>
-                       {props.Data.Description}
-                    </p>
+                <p id="posts-description">
+                    {props.Data.Description}
+                </p>
+                {props.isImage ?
+                <Img src={props.PostImage} alt="post-Photo" width="100%" height="auto"></Img>
+                :
+                <></>}
                 </div>
                 <hr />
                 <div className="posts-like-button-holder">

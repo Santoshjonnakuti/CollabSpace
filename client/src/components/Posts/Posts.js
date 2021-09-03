@@ -43,17 +43,26 @@ function Posts(props) {
             let Liked = false;
             let LikedUser = "";
             for(const i in data[item].LikedBy) {
-                // console.log(data[item]);
                 if(data[item].LikedBy[i] === UserData.rootUser.Email) {
                     Liked = true;
                 }
                 LikedUser = data[item].LikedBy[i];
             };
-            array.push(
-                <Post key={data[item]._id} Data={data[item]} Liked={Liked} LikedUser={LikedUser.split("@")[0]} location={props.location.pathname}
-                    Profile={UserData.rootUser.Profile}
-                />
-            );
+            if(data[item].Image === "None") {
+                array.push(
+                    <Post key={data[item]._id} Data={data[item]} Liked={Liked} LikedUser={LikedUser.split("@")[0]} 
+                    location={props.location.pathname} Profile={UserData.rootUser.Profile} isImage={false}
+                    />
+                );
+            }
+            else {
+                array.push(
+                    <Post key={data[item]._id} Data={data[item]} Liked={Liked} LikedUser={LikedUser.split("@")[0]} 
+                    location={props.location.pathname} Profile={UserData.rootUser.Profile} isImage={true}
+                    PostImage={"../../images/PostImages/" + data[item].Image}
+                    />
+                );
+            }
         }
         return array;
     }

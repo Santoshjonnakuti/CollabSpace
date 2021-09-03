@@ -23,6 +23,8 @@ function NewPost(props) {
         "WebkitBoxShadow": `0 0 5px white`,
         "boxShadow": `0 0 5px white`
     });
+    const [PostImage, setPostImage] = useState({});
+    const [isImage, setIsImage] = useState(false);
     const toogle = (target, stateValue, ValuesetState) => {
         if(target.length > 0) {
             ValuesetState(true)
@@ -33,24 +35,41 @@ function NewPost(props) {
     }
     const postPost = async (event) => {
         event.preventDefault();
-        const response = await axios.post("http://localhost:5000/newPost", {
-                method: "POST",
-                headers: {
-                    "Content-Type" : "application/json"
-                },
-            body : {Title, Description}});
-        console.log(response.status);
-        if(response.status === 200) {
-            setUserData(response.data);
-            toast.success("Posted Successfully!", {position: "top-center", autoClose: 3000, hideProgressBar: true});
-            setTimeout(() => {
-                history.push("/Account/Posts");
-            }, 3000);
-
+        console.log(PostImage);
+        const fd = new FormData();
+        fd.append("Title", Title);
+        fd.append("Description", Description);
+        if(isImage) {
+            fd.append("PostImage", PostImage, PostImage.name);
         }
-        else {
-            console.log("Error!");
-            // toast.error("Error!", {position: "top-center", autoClose: 3000, hideProgressBar: true});
+        console.log(fd);
+        fetch("http://localhost:5000/newPost", {
+            method: "POST",
+            credentials:"include",
+            body: fd,
+        })
+        .then((response) => response.json())
+        .then((result) => {
+            if(result.Status === "200") {
+                toast.success(result.Message, {position:"top-center", autoClose:3000, hideProgressBar:true});
+                setTimeout(() => {
+                    history.push("/Account/Posts");
+                }, 3000);
+            }
+            else {
+                toast.error(result.Message, {position:"top-center", autoClose:3000, hideProgressBar:true});
+                setInvalid({
+                    "border": "1px solid red",
+                    "MozBoxShadow": `0 0 5px red`,
+                    "WebkitBoxShadow": `0 0 5px red`,
+                    "boxShadow": `0 0 5px red`
+                })
+                toogle(Title, isTitleValid, setIsTitleValid);
+                toogle(Description, isDescriptionValid, setIsDescriptionValid);
+            }
+        })
+        .catch((error) => {
+            toast.error("Error!", {position:"top-center", autoClose:3000, hideProgressBar:true});
             setInvalid({
                 "border": "1px solid red",
                 "MozBoxShadow": `0 0 5px red`,
@@ -59,8 +78,7 @@ function NewPost(props) {
             })
             toogle(Title, isTitleValid, setIsTitleValid);
             toogle(Description, isDescriptionValid, setIsDescriptionValid);
-
-        }
+        });
     }
     const callFeed = async () => { 
         const response = await axios.get("http://localhost:5000/auth", {
@@ -98,11 +116,21 @@ function NewPost(props) {
                         />
                     </div>
                     <div>
-                        <textarea  placeholder="Description" cols={24} rows ={10} required
+                        <textarea  placeholder="Description" cols={28} rows ={10} required
                             onChange = {(event) => {setDescription(event.target.value)
                             toogle(event.target.value, isDescriptionValid, setIsDescriptionValid)}} value = {Description}
                             style={isDescriptionValid ? Valid : Invalid}
                             />
+                    </div>
+                    <div>
+                        <label>
+                            <i className="bi bi-card-image">
+                                <input type="file" style={{display:"none"}} accept=".jpg, .png"
+                                onChange={(event) => {setPostImage(event.target.files[0])
+                                setIsImage(true)}}/>
+                            </i>
+                            Upload Image
+                        </label>
                     </div>
                     <button className="btn btn-primary" onClick={postPost}>Post</button>
                     </form>

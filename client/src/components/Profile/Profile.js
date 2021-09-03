@@ -103,7 +103,7 @@ function Profile() {
                                     style={{display:"flex", justifyContent:"flex-end",alignItems:"center"}}>
                                     <input type="file" onChange={editProfilePic} style={{visibility:"hidden",display:"none"}}/>Edit
                                 </label>
-                                <Img src={getProfile()} alt="Profile" width="200px" height="auto"></Img>
+                                <Img src={getProfile()} alt="Profile" width="200px" height="auto" maxHeight="218px"></Img>
                             </div>
                             <div>
                                 <br></br>

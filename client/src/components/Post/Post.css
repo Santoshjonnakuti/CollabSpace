@@ -62,7 +62,7 @@
   }
 .post-content > p {
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
 }
 .posts-like-button-holder {
@@ -83,6 +83,9 @@ i {
     font-weight: 600;
     text-align: left;
     color: #fc6abf;
+}
+#posts-description {
+    text-align: left;
 }
 .toast-outer-container {
     width: 100%;
