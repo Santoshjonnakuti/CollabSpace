@@ -3,12 +3,11 @@ import axios from "axios";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
 import "./Profile.css";
-import defaultOther from "../../images/default-other.png";
-import defaultMale from "../../images/default-male.jpg";
-import defaultFemale from "../../images/default-female.jpg";
 import UnAuthorized from '../UnAuthorized/UnAuthorized';
 import Loading from '../Loading/Loading';
-import { ToastContainer } from 'react-toastify';
+import Img from '../ProfileImg/ProfileImg';
+import { toast, ToastContainer } from 'react-toastify';
+// import Image from "../../images/Profiles/61083442cdca514ce0745b5c_default-other.png"
 
 function Profile() {
     const [Authorized, setAuth] = useState(false);
@@ -48,13 +47,41 @@ function Profile() {
         
     }, []);
     const getProfile = () => {
+        if(UserData.Profile) {
+            if(UserData.Profile !== "None") {
+                return "../../images/Profiles/" + UserData.Profile;
+            }
+        }
         if(UserData.Gender === "Male") {
-            return defaultMale;
+            return "../../images/Profiles/default-male.jpg";
         }
         else if(UserData.Gender === "Female") {
-            return defaultFemale;
+            return "../../images/Profiles/default-female.jpg";
         }
-        return defaultOther;
+        return "../../images/Profiles/default-other.png";
+    }
+    const editProfilePic = (event) => {
+        const fd = new FormData();
+        fd.append('Email', UserData.Email);
+        fd.append('_id', UserData._id);
+        fd.append('image', event.target.files[0], event.target.files.name);
+        fetch("http://localhost:5000/editProfilePic", {
+            method: "POST",
+            body: fd,
+        })
+        .then((response) => response.json())
+        .then((result) => {
+            if(result.Status === "200") {
+                // setDummy("../../images/Profiles/" + result.Profile);
+                toast.success(result.Message, {position:"top-center", autoClose:3000, hideProgressBar:true})
+            }
+            else {
+                toast.error(result.Message, {position:"top-center", autoClose:3000, hideProgressBar:true});
+            }
+        })
+        .catch((error) => {
+            toast.error("Error!");
+        });
     }
     return(
         isLoading ? 
@@ -71,7 +98,13 @@ function Profile() {
                 <div className="profile-card-outer">
                     <div className="profile-card">
                         <div className="profile-card-left">
-                            <img src={getProfile()} alt="profile" height="200px" width="auto"></img>
+                            <div style={{display:"flex", flexDirection:"column", justifyContent:"left"}}>
+                                <label
+                                    style={{display:"flex", justifyContent:"flex-end",alignItems:"center"}}>
+                                    <input type="file" onChange={editProfilePic} style={{visibility:"hidden",display:"none"}}/>Edit
+                                </label>
+                                <Img src={getProfile()} alt="Profile" width="200px" height="auto"></Img>
+                            </div>
                             <div>
                                 <br></br>
                                 <div className="profile-card-left-content">

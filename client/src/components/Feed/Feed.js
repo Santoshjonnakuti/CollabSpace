@@ -31,8 +31,7 @@ function Feed(props) {
         }
     }
     useEffect(() => {
-        callFeed();
-        
+        callFeed();        
     }, []);
     const feed = () => {
         const data = UserData.feed;
@@ -47,7 +46,9 @@ function Feed(props) {
                 LikedUser = data[item].LikedBy[i];
             };
             array.push(
-                <Post key={data[item]._id} Data={data[item]} Liked={Liked} LikedUser={LikedUser.split("@")[0]} location={props.location.pathname}/>
+                <Post key={data[item]._id} Data={data[item]} Liked={Liked} LikedUser={LikedUser.split("@")[0]} location={props.location.pathname}
+                    Profile={UserData.Profiles[item]}
+                />
             );
         }
         return array;

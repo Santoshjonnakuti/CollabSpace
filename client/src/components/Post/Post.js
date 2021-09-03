@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import axios from "axios";
 import { ToastContainer, toast, Slide} from "react-toastify";
-import defaultOther from "../../images/default-other.png";
-import defaultMale from "../../images/default-male.jpg";
-import defaultFemale from "../../images/default-female.jpg";
+import Img from "../ProfileImg/ProfileImg";
 import logo from "../../images/favicon.ico";
 import "./Post.css";
 import 'react-toastify/dist/ReactToastify.css';
@@ -37,13 +35,18 @@ function Post(props) {
     }
     const getProfile = () => {
         // console.log(props.Data);
+        if(props.Profile) {
+            if(props.Profile !== "None") {
+                return "../../images/Profiles/" + props.Profile;
+            }
+        }
         if(props.Data.Gender === "Male") {
-            return defaultMale;
+            return "../../images/Profiles/default-male.jpg";
         }
         else if(props.Data.Gender === "Female") {
-            return defaultFemale;
+            return "../../images/Profiles/default-female.jpg";
         }
-        return defaultOther;
+        return "../../images/Profiles/default-other.png";
     }
     const deletePost = async () => {
         const response = await axios.post("http://localhost:5000/deletePost", {
@@ -70,7 +73,7 @@ function Post(props) {
             <div className="posts-post-container">
                 <div className="post-container-profile-container">
                     <div className="post-profile-container-img">
-                        <img src={getProfile()} height="32px" width="32px" alt="profile"></img>
+                        <Img src={getProfile()} height="32px" width="32px" alt="profile"></Img>
                     </div>&nbsp;&nbsp;
                     <div className="post-profile-container-user">
                         <p>{props.Data.Name}</p>

@@ -12,8 +12,9 @@ const Authenticate = async (req, res, next) => {
             req.rootUser = rootUser;
         }
         next();
-
     } catch (error) {
+        console.log(error);
+
         res.send({"Authorized": false});
     }
 

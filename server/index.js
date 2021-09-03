@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const cookieParser = require("cookie-parser");
 const nodemailer = require("nodemailer");
+const fileUpload = require("express-fileupload");
 const DBConnection = require("./Database/DBConnection/DBConnection");
 const User = require("./Database/Models/User");
 const Authenticate = require("./Middleware/Auth");
@@ -21,6 +22,7 @@ app.use(cors(corsConfig));
 app.options('*', cors(corsConfig));  
 app.use(express.json());
 app.use(cookieParser());
+app.use(fileUpload());
 
 DBConnection();
 
@@ -97,9 +99,15 @@ app.get("/feed", Authenticate, async(req, res) => {
     }
     else {
         const feed = await Post.find({$nor:[{$and:[{'Email':req.rootUser.Email}]}]}).sort({"postedOn": -1});
+        let Profiles = []
+        for(const post in feed) {
+            const user = await User.findOne({"Email":feed[post].Email});
+            Profiles.push(user.Profile);
+            feed[post]["Profile"] = user.Profile;
+        }
         const rootUser = req.rootUser;
         const Authorized = true;
-        res.status(200).send({rootUser, feed, Authorized});
+        res.status(200).send({rootUser, feed, Authorized, Profiles});
     }
 });
 
@@ -417,6 +425,22 @@ app.post("/resetPassword", async(req, res) => {
         res.send({"Status": 200, "Message": "Password Reset Success..."});
     }
 });
+
+app.post("/editProfilePic", async(req, res) => {
+    var img = req.files.image;
+    img.mv("../client/public/images/Profiles/" + req.body._id + "_" + img.name, async (err)=> {
+        if(err) {
+            res.send({"Status": "400", "Message": "Error Occurred!"});
+        }
+        else {
+            const user = await User.findOne({"Email":req.body.Email});
+            let Name = `${req.body._id}_${img.name}`;
+            user.Profile = Name;
+            await user.save();
+            res.send({"Status": "200", "Message":"Profile Pic Updated Successfully..", "Profile": Name});
+        }
+    });
+})
 
 app.get("/logout", async(req, res) => {
     res.clearCookie('jwtoken', {path :"/"});

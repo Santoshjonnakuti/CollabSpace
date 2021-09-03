@@ -37,6 +37,10 @@ const user = new mongoose.Schema({
         type: String,
         required: true
     },
+    Profile : {
+        type: String,
+        default : "None"
+    },
     tokens : [{
         token: {
             type: String,

@@ -50,7 +50,9 @@ function Posts(props) {
                 LikedUser = data[item].LikedBy[i];
             };
             array.push(
-                <Post key={data[item]._id} Data={data[item]} Liked={Liked} LikedUser={LikedUser.split("@")[0]} location={props.location.pathname}/>
+                <Post key={data[item]._id} Data={data[item]} Liked={Liked} LikedUser={LikedUser.split("@")[0]} location={props.location.pathname}
+                    Profile={UserData.rootUser.Profile}
+                />
             );
         }
         return array;
