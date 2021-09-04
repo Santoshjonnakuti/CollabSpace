@@ -35,14 +35,12 @@ function NewPost(props) {
     }
     const postPost = async (event) => {
         event.preventDefault();
-        console.log(PostImage);
         const fd = new FormData();
         fd.append("Title", Title);
         fd.append("Description", Description);
         if(isImage) {
             fd.append("PostImage", PostImage, PostImage.name);
         }
-        console.log(fd);
         fetch("http://localhost:5000/newPost", {
             method: "POST",
             credentials:"include",

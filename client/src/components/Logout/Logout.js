@@ -26,7 +26,8 @@ function Logout(props) {
     }
     useEffect(() => {
         callLogout();
-    });
+        // eslint-disable-next-line
+    }, []);
     return (
         isLoading ?
         <div className="profile-container">
